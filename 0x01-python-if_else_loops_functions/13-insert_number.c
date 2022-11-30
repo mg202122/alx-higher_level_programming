@@ -1,24 +1,8 @@
-#include <stdlib.h>
-#include "lists.h"
+#!/usr/bin/python3
 
-/**
- * *insert_node - inserts a number into a sorted singly linked list
- * @head: pointer to address of head of list
- * @number: integer to be include in new node
- * Return: address of new node, or NULL if it failed
- */
-listint_t *insert_node(listint_t **head, int number)
-{
-	listint_t *newnode, *temp;
-
-	newnode = malloc(sizeof(listint_t));
-	if (newnode == NULL)
-		return (NULL);
-	if (*head == NULL)
-	{
-		newnode->n = number;
-		newnode->next = *head;
-		*head = newnode;
-		return (newnode);
-	}
-	else if (number <= (*head)->n)
+def remove_char_at(str, n):
+    str_list = list()
+    for i in range(len(str)):
+        if not (i == n):
+            str_list.append(str[i])
+    return (''.join(str_list))
