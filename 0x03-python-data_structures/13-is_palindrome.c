@@ -1,66 +1,71 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "lists.h"
 
 /**
- * size_of_list - returns size of list
- * @head: head of listint_t
- *
- * Return: int
+ * reverse_listint - reverses a linked list
+ * @head: pointer to the first node in the list
+ * Return: pointer to the first node in the new list
  */
-int size_of_list(listint_t **head)
+void reverse_listint(listint_t **head)
 {
-	listint_t *ptr = *head;
-	int i = 0;
+	listint_t *prev = NULL;
+	listint_t *current = *head;
+	listint_t *next = NULL;
 
-	while (ptr)
+	while (current)
 	{
-		ptr = ptr->next;
-		i++;
+		next = current->next;
+		current->next = prev;
+		prev = current;
+		current = next;
 	}
-	return (i);
-}
 
-
-/**
- * get_n_by_idx - get n value using index
- * @head: head of listint_t
- * @idx: index
- *
- * Return: int
- */
-int get_n_by_idx(listint_t **head, int idx)
-{
-	int i = 0;
-	listint_t *ptr = *head;
-
-	while (ptr)
-	{
-		if (i == idx)
-			break;
-		ptr = ptr->next;
-		i++;
-	}
-	return (ptr->n);
+	*head = prev;
 }
 
 /**
- * is_palindrome - checks if list is a palindrome
- * @head: head of listint_t
+ * is_palindrome - checks if a linked list is a palindrome
+ * @head: double pointer to the linked list
  *
- * Return: true (1) or false (0)
+ * Return: 1 if it is, 0 if not
  */
 int is_palindrome(listint_t **head)
 {
-	int start, end;
+	listint_t *slow = *head, *fast = *head, *temp = *head, *dup = NULL;
 
-	start = 0;
-	end = size_of_list(head) - 1;
+	if (*head == NULL || (*head)->next == NULL)
+		return (1);
 
-	for (; start <= end; start++, end--)
+	while (1)
 	{
-		if (get_n_by_idx(head, start) != get_n_by_idx(head, end))
+		fast = fast->next->next;
+		if (!fast)
+		{
+			dup = slow->next;
+			break;
+		}
+		if (!fast->next)
+		{
+			dup = slow->next->next;
+			break;
+		}
+		slow = slow->next;
+	}
+
+	reverse_listint(&dup);
+
+	while (dup && temp)
+	{
+		if (temp->n == dup->n)
+		{
+			dup = dup->next;
+			temp = temp->next;
+		}
+		else
 			return (0);
 	}
-	return (1);
+
+	if (!dup)
+		return (1);
+
+	return (0);
 }
